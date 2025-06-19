@@ -1,0 +1,56 @@
+broker:
+  # Configuration for the broker API (e.g., IBKR, Alpaca)
+  name: IBKRBroker
+  account_type: paper # 'paper' or 'live'
+  host: 127.0.0.1
+  port: 4002 # 4002 for IB Gateway paper trading
+  client_id: 1
+  # Add other IBKR specific configs here
+
+data:
+  # Configuration for market data sources (e.g., Twelve Data, Finnhub)
+  provider: TwelveData # Options: 'TwelveData', 'Finnhub', 'yfinance'
+  symbols: ["AAPL", "MSFT", "GOOG", "EUR/USD", "GBP/USD"] # List of symbols to trade/monitor
+  symbol_providers: {}  # Removed Finnhub forex routing
+  symbol_aliases: {}
+  # Add API specific configs if needed, e.g., interval for TwelveData
+  twelvedata_interval: 1min 
+  # Finnhub specific settings can go here
+
+strategy:
+  # Configuration for the trading strategy
+  name: GithubAgentStrategy
+  params:
+    mode: live
+    return_type: "string"  # Live mode for IBKR paper trading
+    # Add other strategy-specific parameters here
+
+risk:
+  # Configuration for risk management parameters
+  max_drawdown: 0.10
+  max_position_size_pct: 0.05 # Max 5% of portfolio per position
+  # Add other risk parameters
+
+portfolio:
+  # Configuration for portfolio management
+  initial_capital: 100000
+  # Add other portfolio settings
+
+backtest:
+  # Configuration for backtesting parameters
+  engine: vectorbt # 'vectorbt' or 'backtrader'
+  start_date: "2023-01-01"
+  end_date: "2023-12-31"
+  commission_bps: 2 # Basis points for commission
+  slippage_pct: 0.01 # Percentage slippage
+
+log:
+  # Configuration for logging 
+  level: INFO # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  to_file: true
+  log_file: trading_bot.log
+
+bot:
+  # Main bot configuration
+  max_iterations: 3      # Run for 3 iterations
+  loop_interval_seconds: 30  # 30 seconds between iterations 

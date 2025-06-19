@@ -1,0 +1,242 @@
+2025-05-20 13:44:38,591 - root - INFO - Logging configured. Level: INFO, File: trading_bot.log.
+2025-05-20 13:44:38,591 - root - INFO - Trading Bot Starting...
+2025-05-20 13:44:38,619 - root - INFO - Attempting to load strategy: Class 'ExampleStrategy' from module 'strategies.example_strategy'
+2025-05-20 13:44:38,631 - root - INFO - Successfully loaded strategy class: ExampleStrategy
+2025-05-20 13:44:38,633 - root - INFO - Starting main trading loop...
+2025-05-20 13:44:40,461 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-20 18:44:38.766238+00:00)
+2025-05-20 13:44:40,468 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-20 13:44:40,606 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-20 18:44:40.583056+00:00)
+2025-05-20 13:44:40,637 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-20 13:44:40,756 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-20 18:44:40.752607+00:00)
+2025-05-20 13:44:40,757 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-20 13:45:40,862 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-20 18:45:40.859213+00:00)
+2025-05-20 13:45:40,863 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-20 13:45:40,967 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-20 18:45:40.965348+00:00)
+2025-05-20 13:45:40,968 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-20 13:45:41,071 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-20 18:45:41.069373+00:00)
+2025-05-20 13:45:41,072 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-20 13:46:41,177 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-20 18:46:41.174350+00:00)
+2025-05-20 13:46:41,177 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-20 13:46:41,282 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-20 18:46:41.279080+00:00)
+2025-05-20 13:46:41,283 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-20 13:46:41,390 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-20 18:46:41.384865+00:00)
+2025-05-20 13:46:41,391 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-20 13:47:41,497 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-20 18:47:41.495085+00:00)
+2025-05-20 13:47:41,498 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-20 13:47:41,603 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-20 18:47:41.599645+00:00)
+2025-05-20 13:47:41,604 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-20 13:47:41,707 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-20 18:47:41.705714+00:00)
+2025-05-20 13:47:41,708 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-20 13:48:41,814 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-20 18:48:41.810760+00:00)
+2025-05-20 13:48:41,815 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-20 13:48:41,918 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-20 18:48:41.916280+00:00)
+2025-05-20 13:48:41,919 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-20 13:48:42,022 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-20 18:48:42.020485+00:00)
+2025-05-20 13:48:42,023 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-20 13:49:42,129 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-20 18:49:42.125099+00:00)
+2025-05-20 13:49:57,267 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-20 13:49:57,393 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-20 18:49:57.383105+00:00)
+2025-05-20 13:49:57,396 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-20 13:49:57,500 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-20 18:49:57.498525+00:00)
+2025-05-20 13:49:57,501 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-20 13:50:57,605 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-20 18:50:57.602798+00:00)
+2025-05-20 13:50:57,606 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-20 13:50:57,709 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-20 18:50:57.707313+00:00)
+2025-05-20 13:50:57,710 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-20 13:50:57,857 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-20 18:50:57.842398+00:00)
+2025-05-20 13:50:57,858 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-20 13:51:57,964 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-20 18:51:57.960813+00:00)
+2025-05-20 13:51:57,966 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-20 13:51:58,070 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-20 18:51:58.067329+00:00)
+2025-05-20 13:51:58,071 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-20 13:51:58,174 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-20 18:51:58.171977+00:00)
+2025-05-20 13:51:58,174 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-20 13:52:58,279 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-20 18:52:58.276961+00:00)
+2025-05-20 13:52:58,280 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-20 13:52:58,385 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-20 18:52:58.382517+00:00)
+2025-05-20 13:52:58,386 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-20 13:52:58,489 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-20 18:52:58.487248+00:00)
+2025-05-20 13:52:58,492 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-20 13:53:58,596 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-20 18:53:58.594453+00:00)
+2025-05-20 13:53:58,597 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-20 13:53:58,701 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-20 18:53:58.699116+00:00)
+2025-05-20 13:53:58,702 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-20 13:53:58,807 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-20 18:53:58.803644+00:00)
+2025-05-20 13:53:58,808 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-20 13:54:58,912 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-20 18:54:58.910054+00:00)
+2025-05-20 13:54:58,913 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-20 13:54:59,016 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-20 18:54:59.014607+00:00)
+2025-05-20 13:54:59,017 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-20 13:54:59,121 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-20 18:54:59.118954+00:00)
+2025-05-20 13:54:59,122 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-20 13:55:59,226 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-20 18:55:59.224122+00:00)
+2025-05-20 13:55:59,227 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-20 13:55:59,332 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-20 18:55:59.328838+00:00)
+2025-05-20 13:55:59,333 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-20 13:55:59,436 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-20 18:55:59.433904+00:00)
+2025-05-20 13:55:59,436 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-20 13:56:59,541 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-20 18:56:59.538550+00:00)
+2025-05-20 13:56:59,542 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-20 13:56:59,647 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-20 18:56:59.643014+00:00)
+2025-05-20 13:56:59,648 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-20 13:56:59,752 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-20 18:56:59.749977+00:00)
+2025-05-20 13:56:59,753 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-20 13:57:59,859 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-20 18:57:59.855128+00:00)
+2025-05-20 13:57:59,859 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-20 13:57:59,985 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-20 18:57:59.976695+00:00)
+2025-05-20 13:57:59,988 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-20 13:58:00,092 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-20 18:58:00.089469+00:00)
+2025-05-20 13:58:00,093 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-20 13:59:00,197 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-20 18:59:00.194645+00:00)
+2025-05-20 13:59:00,198 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-20 13:59:00,301 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-20 18:59:00.299356+00:00)
+2025-05-20 13:59:00,303 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-20 13:59:00,407 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-20 18:59:00.404773+00:00)
+2025-05-20 13:59:00,408 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-20 14:00:00,512 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-20 19:00:00.509723+00:00)
+2025-05-20 14:00:00,513 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-20 14:00:00,617 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-20 19:00:00.614372+00:00)
+2025-05-20 14:00:00,618 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-20 14:00:00,722 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-20 19:00:00.720143+00:00)
+2025-05-20 14:00:00,723 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-20 14:01:00,828 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-20 19:01:00.825074+00:00)
+2025-05-20 14:01:00,830 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-20 14:01:00,934 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-20 19:01:00.931854+00:00)
+2025-05-20 14:01:00,935 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-20 14:01:01,039 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-20 19:01:01.035923+00:00)
+2025-05-20 14:01:01,041 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-20 14:02:01,145 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-20 19:02:01.142796+00:00)
+2025-05-20 14:02:01,146 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-20 14:02:01,250 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-20 19:02:01.248177+00:00)
+2025-05-20 14:02:01,253 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-20 14:02:01,359 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-20 19:02:01.356284+00:00)
+2025-05-20 14:02:01,361 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-20 14:03:01,465 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-20 19:03:01.462881+00:00)
+2025-05-20 14:03:01,466 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-20 14:03:01,569 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-20 19:03:01.567423+00:00)
+2025-05-20 14:03:01,572 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-20 14:03:01,675 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-20 19:03:01.673204+00:00)
+2025-05-20 14:03:01,676 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-20 14:04:01,781 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-20 19:04:01.778407+00:00)
+2025-05-20 14:04:01,782 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-20 14:04:01,886 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-20 19:04:01.883626+00:00)
+2025-05-20 14:04:01,887 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-20 14:04:01,990 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-20 19:04:01.987909+00:00)
+2025-05-20 14:04:01,991 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-20 14:05:02,095 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-20 19:05:02.092720+00:00)
+2025-05-20 14:05:02,097 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-20 14:05:02,200 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-20 19:05:02.198415+00:00)
+2025-05-20 14:05:02,201 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-20 14:05:02,305 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-20 19:05:02.302823+00:00)
+2025-05-20 14:05:02,305 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-20 14:06:02,411 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-20 19:06:02.407717+00:00)
+2025-05-20 14:06:02,412 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-20 14:06:02,516 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-20 19:06:02.513725+00:00)
+2025-05-20 14:06:02,516 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-20 14:06:02,620 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-20 19:06:02.618088+00:00)
+2025-05-20 14:06:02,621 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-20 14:07:02,725 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-20 19:07:02.723369+00:00)
+2025-05-20 14:07:02,726 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-20 14:07:03,045 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-20 19:07:03.042964+00:00)
+2025-05-20 14:07:03,045 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-20 14:07:03,150 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-20 19:07:03.147124+00:00)
+2025-05-20 14:07:03,151 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-21 10:58:28,651 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-21 15:58:28.648496+00:00)
+2025-05-21 10:58:28,652 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-21 10:58:28,757 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-21 15:58:28.753440+00:00)
+2025-05-21 10:58:28,759 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-21 10:58:28,862 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-21 15:58:28.860393+00:00)
+2025-05-21 10:58:28,863 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-21 10:59:28,968 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-21 15:59:28.965678+00:00)
+2025-05-21 10:59:28,969 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-21 10:59:29,073 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-21 15:59:29.071031+00:00)
+2025-05-21 10:59:29,074 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-21 10:59:29,177 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-21 15:59:29.175274+00:00)
+2025-05-21 10:59:29,178 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-21 11:00:29,285 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-21 16:00:29.281441+00:00)
+2025-05-21 11:00:29,286 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-21 11:00:29,389 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-21 16:00:29.387667+00:00)
+2025-05-21 11:00:29,390 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-21 11:00:29,494 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-21 16:00:29.491960+00:00)
+2025-05-21 11:00:29,495 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-21 11:01:29,599 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-21 16:01:29.597115+00:00)
+2025-05-21 11:01:29,600 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-21 11:01:29,703 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-21 16:01:29.701630+00:00)
+2025-05-21 11:01:29,704 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-21 11:01:29,807 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-21 16:01:29.805663+00:00)
+2025-05-21 11:01:29,809 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-21 11:02:29,914 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-21 16:02:29.911837+00:00)
+2025-05-21 11:02:29,915 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-21 11:02:30,018 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-21 16:02:30.016448+00:00)
+2025-05-21 11:02:30,019 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-21 11:02:30,124 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-21 16:02:30.120836+00:00)
+2025-05-21 11:02:30,125 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-21 11:03:30,229 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-21 16:03:30.226645+00:00)
+2025-05-21 11:03:30,230 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-21 11:03:30,333 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-21 16:03:30.331222+00:00)
+2025-05-21 11:03:30,335 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-21 11:03:30,439 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-21 16:03:30.436662+00:00)
+2025-05-21 11:03:30,439 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-27 13:02:29,301 - root - INFO - Logging configured. Level: INFO, File: trading_bot.log.
+2025-05-27 13:02:29,311 - root - INFO - Trading Bot Starting...
+2025-05-27 13:02:29,397 - root - INFO - Attempting to load strategy: Class 'ExampleStrategy' from module 'strategies.example_strategy'
+2025-05-27 13:02:29,420 - root - INFO - Successfully loaded strategy class: ExampleStrategy
+2025-05-27 13:02:29,430 - root - INFO - Starting main trading loop...
+2025-05-27 13:02:29,562 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-27 18:02:29.534798+00:00)
+2025-05-27 13:02:29,562 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-27 13:02:29,665 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-27 18:02:29.663805+00:00)
+2025-05-27 13:02:29,666 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-27 13:02:29,769 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-27 18:02:29.767489+00:00)
+2025-05-27 13:02:29,770 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-27 13:03:29,877 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-27 18:03:29.874280+00:00)
+2025-05-27 13:03:29,878 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-27 13:03:29,983 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-27 18:03:29.979989+00:00)
+2025-05-27 13:03:29,984 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-27 13:03:30,089 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-27 18:03:30.085122+00:00)
+2025-05-27 13:03:30,090 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-27 13:05:19,831 - root - INFO - Logging configured. Level: INFO, File: trading_bot.log.
+2025-05-27 13:05:19,831 - root - INFO - Trading Bot Starting...
+2025-05-27 13:05:19,840 - root - INFO - Attempting to load strategy: Class 'ExampleStrategy' from module 'strategies.example_strategy'
+2025-05-27 13:05:19,846 - root - INFO - Successfully loaded strategy class: ExampleStrategy
+2025-05-27 13:05:19,847 - root - INFO - Starting main trading loop...
+2025-05-27 13:05:19,969 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-27 18:05:19.961967+00:00)
+2025-05-27 13:05:20,008 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-27 13:05:20,148 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-27 18:05:20.146669+00:00)
+2025-05-27 13:05:20,149 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-27 13:05:20,255 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-27 18:05:20.249949+00:00)
+2025-05-27 13:05:20,256 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-27 13:06:20,360 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-27 18:06:20.358355+00:00)
+2025-05-27 13:06:20,361 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-27 13:06:20,467 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-27 18:06:20.462955+00:00)
+2025-05-27 13:06:20,468 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-27 13:06:20,572 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-27 18:06:20.568884+00:00)
+2025-05-27 13:06:20,573 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-27 13:08:03,734 - root - INFO - Logging configured. Level: INFO, File: trading_bot.log.
+2025-05-27 13:08:03,734 - root - INFO - Trading Bot Starting...
+2025-05-27 13:08:03,740 - root - INFO - Attempting to load strategy: Class 'ExampleStrategy' from module 'strategies.example_strategy'
+2025-05-27 13:08:03,744 - root - INFO - Successfully loaded strategy class: ExampleStrategy
+2025-05-27 13:08:03,747 - root - INFO - Starting main trading loop...
+2025-05-27 13:08:03,851 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-27 18:08:03.848390+00:00)
+2025-05-27 13:08:03,852 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-27 13:08:03,956 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-27 18:08:03.953536+00:00)
+2025-05-27 13:08:03,956 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-27 13:08:04,060 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-27 18:08:04.057829+00:00)
+2025-05-27 13:08:04,060 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-27 13:08:04,061 - root - INFO - Completed iteration 1 of 3
+2025-05-27 13:09:04,166 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-27 18:09:04.164144+00:00)
+2025-05-27 13:09:04,166 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-27 13:09:04,269 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-27 18:09:04.267949+00:00)
+2025-05-27 13:09:04,270 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-27 13:09:04,373 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-27 18:09:04.371665+00:00)
+2025-05-27 13:09:04,374 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-27 13:09:04,375 - root - INFO - Completed iteration 2 of 3
+2025-05-27 13:10:04,479 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for AAPL (Data up to: 2025-05-27 18:10:04.477078+00:00)
+2025-05-27 13:10:04,479 - root - INFO - TRADE_ACTION: Symbol=AAPL, Signal=BUY, Quantity=1
+2025-05-27 13:10:04,583 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for GOOG (Data up to: 2025-05-27 18:10:04.581016+00:00)
+2025-05-27 13:10:04,583 - root - INFO - TRADE_ACTION: Symbol=GOOG, Signal=BUY, Quantity=1
+2025-05-27 13:10:04,689 - root - INFO - Strategy 'ExampleStrategy' generated signal 'buy' for MSFT (Data up to: 2025-05-27 18:10:04.684832+00:00)
+2025-05-27 13:10:04,690 - root - INFO - TRADE_ACTION: Symbol=MSFT, Signal=BUY, Quantity=1
+2025-05-27 13:10:04,691 - root - INFO - Completed iteration 3 of 3
+2025-05-27 13:10:04,692 - root - INFO - Completed 3 iterations. Exiting main loop.
+2025-05-27 13:10:04,692 - root - INFO - Trading bot shutting down...
+2025-05-27 13:10:04,696 - root - INFO - Trading bot shutdown complete.
