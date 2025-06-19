@@ -1,3 +1,12 @@
+# Trading Bot
+
+Modular, async trading engine with plug-in agents.  
+* Engine: Python `asyncio` + Supabase + IBKR  
+* Data: 1-minute OHLCV + 20-tick buffer  
+* Strategies live in `trading_bot/agents/`
+
+Read the **docs/prd.md** for the detailed product spec.
+
 # AI Hedge Fund
 
 This is a proof of concept for an AI-powered hedge fund.  The goal of this project is to explore the use of AI to make trading decisions.  This project is for **educational** purposes only and is not intended for real trading or investment.

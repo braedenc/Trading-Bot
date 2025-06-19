@@ -51,3 +51,11 @@ Thumbs.db
 
 # Frontend
 node_modules
+
+# Virtualenv / Poetry / Pipenv
+.venv/
+.env/
+*.egg-info/
+
+# Notebooks
+.ipynb_checkpoints/
