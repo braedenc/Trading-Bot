@@ -1,0 +1,24 @@
+ib_insync>=0.9.86
+requests>=2.32.0
+pandas>=2.2
+numpy>=2.2.0
+PyYAML>=6.0
+python-dotenv>=1.0.0
+# Optional packages (uncomment as needed):
+yfinance>=0.2.61
+matplotlib>=3.8.0
+plotly>=6.1.0
+pytest>=8.1
+supabase>=2.16.0,<3.0.0
+pytest-asyncio>=0.23
+
+# Optional packages (require Python 3.8-3.11):
+# vectorbt>=0.25.0  # For backtesting
+# PyPortfolioOpt>=1.5.0  # For portfolio optimization
+
+# Future additions:
+# scikit-learn
+# tensorflow
+# alpaca-trade-api
+# ta
+# mplfinance 
