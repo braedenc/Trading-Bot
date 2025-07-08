@@ -4,11 +4,17 @@ High-performance implementation with optimized calculations.
 """
 
 import asyncio
-import numpy as np
-import pandas as pd
 from typing import List, Dict, Any
 from datetime import datetime, timedelta
 import logging
+
+# Try to import pandas/numpy for optimized performance
+try:
+    import numpy as np
+    import pandas as pd
+    HAS_PANDAS = True
+except ImportError:
+    HAS_PANDAS = False
 
 from trading_bot.base_agent import BaseAgent
 
@@ -88,63 +94,77 @@ class SMAAgent(BaseAgent):
         if 'historical' not in price_data or len(price_data['historical']) < self.min_data_points:
             return None
             
-        # Convert to pandas DataFrame for efficient calculations
-        df = self._create_price_dataframe(price_data['historical'])
+        # Convert to appropriate data structure
+        data = self._create_price_dataframe(price_data['historical'])
         
-        if len(df) < max(self.fast_period, self.slow_period):
-            return None
-            
-        # Check cache to avoid recalculation
-        cache_key = f"{symbol}_{len(df)}_{df['close'].iloc[-1]}"
-        if cache_key in self._sma_cache:
-            fast_sma, slow_sma = self._sma_cache[cache_key]
+        if HAS_PANDAS and hasattr(data, 'iloc'):
+            # Pandas path
+            if len(data) < max(self.fast_period, self.slow_period):
+                return None
+                
+            cache_key = f"{symbol}_{len(data)}_{data['close'].iloc[-1]}"
+            if cache_key in self._sma_cache:
+                fast_sma, slow_sma = self._sma_cache[cache_key]
+            else:
+                fast_sma = data['close'].rolling(window=self.fast_period, min_periods=self.fast_period).mean()
+                slow_sma = data['close'].rolling(window=self.slow_period, min_periods=self.slow_period).mean()
+                self._sma_cache[cache_key] = (fast_sma, slow_sma)
+                
+            current_fast = fast_sma.iloc[-1]
+            current_slow = slow_sma.iloc[-1]
+            prev_fast = fast_sma.iloc[-2] if len(fast_sma) > 1 else current_fast
+            prev_slow = slow_sma.iloc[-2] if len(slow_sma) > 1 else current_slow
+            current_price = data['close'].iloc[-1]
         else:
-            # Calculate SMAs using optimized pandas operations
-            fast_sma = df['close'].rolling(window=self.fast_period, min_periods=self.fast_period).mean()
-            slow_sma = df['close'].rolling(window=self.slow_period, min_periods=self.slow_period).mean()
+            # Simple list path
+            if len(data) < max(self.fast_period, self.slow_period):
+                return None
+                
+            # Calculate SMAs using simple method
+            current_fast = self._simple_sma(data, self.fast_period)
+            current_slow = self._simple_sma(data, self.slow_period)
+            prev_fast = self._simple_sma(data[:-1], self.fast_period) if len(data) > self.fast_period else current_fast
+            prev_slow = self._simple_sma(data[:-1], self.slow_period) if len(data) > self.slow_period else current_slow
+            current_price = data[-1]
             
-            # Cache the results
-            self._sma_cache[cache_key] = (fast_sma, slow_sma)
-            
-            # Limit cache size to prevent memory issues
-            if len(self._sma_cache) > 100:
-                # Remove oldest entries
-                keys_to_remove = list(self._sma_cache.keys())[:20]
-                for key in keys_to_remove:
-                    del self._sma_cache[key]
-        
-        # Get current and previous values for crossover detection
-        current_fast = fast_sma.iloc[-1]
-        current_slow = slow_sma.iloc[-1]
-        prev_fast = fast_sma.iloc[-2] if len(fast_sma) > 1 else current_fast
-        prev_slow = slow_sma.iloc[-2] if len(slow_sma) > 1 else current_slow
+            if current_fast is None or current_slow is None:
+                return None
         
         # Detect crossovers
         signal = self._detect_crossover(
             current_fast, current_slow, prev_fast, prev_slow, 
-            current_position, symbol, df['close'].iloc[-1]
+            current_position, symbol, current_price
         )
         
         return signal
     
-    def _create_price_dataframe(self, historical_data: List[dict]) -> pd.DataFrame:
-        """Convert historical price data to pandas DataFrame efficiently."""
+    def _simple_sma(self, prices: List[float], period: int) -> float:
+        """Simple moving average calculation without numpy."""
+        if len(prices) < period:
+            return None
+        return sum(prices[-period:]) / period
+    
+    def _create_price_dataframe(self, historical_data: List[dict]):
+        """Convert historical price data to DataFrame or simple list based on availability."""
         
-        # Use list comprehension for speed
-        data = [
-            {
-                'timestamp': item['timestamp'],
-                'close': float(item['close']),
-                'volume': float(item.get('volume', 0))
-            }
-            for item in historical_data
-        ]
-        
-        df = pd.DataFrame(data)
-        df['timestamp'] = pd.to_datetime(df['timestamp'])
-        df = df.sort_values('timestamp').reset_index(drop=True)
-        
-        return df
+        if HAS_PANDAS:
+            # Use pandas for optimized performance
+            data = [
+                {
+                    'timestamp': item['timestamp'],
+                    'close': float(item['close']),
+                    'volume': float(item.get('volume', 0))
+                }
+                for item in historical_data
+            ]
+            
+            df = pd.DataFrame(data)
+            df['timestamp'] = pd.to_datetime(df['timestamp'])
+            df = df.sort_values('timestamp').reset_index(drop=True)
+            return df
+        else:
+            # Simple fallback without pandas
+            return [float(item['close']) for item in historical_data]
     
     def _detect_crossover(self, current_fast: float, current_slow: float, 
                          prev_fast: float, prev_slow: float,
