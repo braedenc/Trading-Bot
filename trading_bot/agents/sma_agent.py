@@ -60,7 +60,7 @@ class SMAAgent(BaseAgent):
         
     async def generate_signals(self, snapshot: dict) -> List[dict]:
         """
-        Generate SMA crossover signals.
+        Generate SMA crossover signals with heartbeat integration.
         
         Performance optimizations:
         1. Cache price data and SMA calculations
@@ -69,21 +69,63 @@ class SMAAgent(BaseAgent):
         4. Early exit for insufficient data
         """
         signals = []
+        last_error = None
         
         try:
+            # Import heartbeat function if available
+            try:
+                from trading_bot.execution import heartbeat
+                heartbeat_available = True
+            except ImportError:
+                heartbeat_available = False
+            
+            # Record heartbeat at start of execution
+            if heartbeat_available:
+                await heartbeat(self.name, "healthy", metadata={"phase": "start_signal_generation"})
+            
             prices_data = snapshot.get('prices', {})
             current_positions = snapshot.get('positions', {})
             
             for symbol, price_data in prices_data.items():
-                signal = await self._generate_signal_for_symbol(
-                    symbol, price_data, current_positions.get(symbol, 0)
-                )
-                
-                if signal:
-                    signals.append(signal)
+                try:
+                    signal = await self._generate_signal_for_symbol(
+                        symbol, price_data, current_positions.get(symbol, 0)
+                    )
+                    
+                    if signal:
+                        signals.append(signal)
+                        
+                except Exception as symbol_error:
+                    # Log symbol-specific errors but continue with other symbols
+                    error_msg = f"Error processing symbol {symbol}: {symbol_error}"
+                    self.logger.warning(error_msg)
+                    last_error = error_msg
+                    
+                    if heartbeat_available:
+                        await heartbeat(self.name, "warning", last_error=error_msg, 
+                                      metadata={"symbol": symbol, "phase": "symbol_processing"})
+            
+            # Record successful completion heartbeat
+            if heartbeat_available:
+                await heartbeat(self.name, "healthy", 
+                              metadata={
+                                  "phase": "completed_signal_generation",
+                                  "signals_generated": len(signals),
+                                  "symbols_processed": len(prices_data)
+                              })
                     
         except Exception as e:
-            self.logger.error(f"Error generating signals: {e}")
+            # Capture major execution errors
+            error_msg = f"Critical error in generate_signals: {e}"
+            self.logger.error(error_msg)
+            last_error = error_msg
+            
+            # Record error heartbeat if possible
+            if heartbeat_available:
+                await heartbeat(self.name, "error", last_error=error_msg,
+                              metadata={"phase": "critical_error", "error_type": type(e).__name__})
+            
+            # Don't re-raise to allow system to continue
             
         return signals
     
