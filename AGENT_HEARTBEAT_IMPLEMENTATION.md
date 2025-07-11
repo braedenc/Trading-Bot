@@ -89,7 +89,7 @@ await show_agent_health()
 
 ## 🧪 Testing
 
-Run the test suite:
+Run the comprehensive test suite:
 ```bash
 python -m pytest tests/test_heartbeat.py -v
 ```
@@ -98,6 +98,24 @@ Run the demo:
 ```bash
 python demo_heartbeat.py full
 ```
+
+## ✅ Acceptance Testing
+
+### Quick Acceptance Test
+```bash
+python3 test_acceptance.py
+```
+
+### Full Acceptance Test (validates both criteria)
+```bash
+python3 acceptance_test_simple.py
+```
+
+The acceptance test verifies:
+1. **Red Indicator**: Killing SMAAgent loop turns dashboard red within 2 minutes
+2. **Supabase Updates**: Health table updates are written to database
+
+Expected output shows agent going from 🟢 GREEN → 🔴 RED when heartbeats stop.
 
 ## 📊 Database Schema
 

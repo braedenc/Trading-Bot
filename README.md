@@ -53,6 +53,22 @@ Run the comprehensive test suite:
 python -m pytest tests/test_heartbeat.py -v
 ```
 
+### ✅ Acceptance Testing
+
+Validate the key acceptance criteria:
+
+```bash
+# Quick test (30 seconds)
+python3 test_acceptance.py
+
+# Full acceptance test (5 minutes)
+python3 acceptance_test_simple.py
+```
+
+**Acceptance Criteria:**
+1. 🔴 Killing SMAAgent loop turns card red within 2 minutes
+2. 📊 Health table updating in Supabase database
+
 ### 🏗️ Project Structure
 
 ```
