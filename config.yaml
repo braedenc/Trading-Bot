@@ -17,12 +17,13 @@ strategies:
     params:
       strategy_name: "ai_hedge_fund"
 
-  # Example external strategy (requires ai-hedge-fund submodule)
-  # - name: "AI_Hedge_Fund_Momentum"
-  #   path: "external.ai_hedge_fund.strategies.momentum:MomentumStrategy"
+  # Note: ai-hedge-fund uses a different architecture (functions vs BaseAgent classes)
+  # External strategies would need adapter wrappers to work with our plugin system
+  # Example of how external strategies could be configured:
+  # - name: "AI_Hedge_Fund_Technical"
+  #   path: "external.ai_hedge_fund.src.agents.technicals:technical_analyst_agent"
   #   params:
-  #     lookback_period: 30
-  #     threshold: 0.02
+  #     analysis_type: "technical"
 
 # Execution settings
 execution:
