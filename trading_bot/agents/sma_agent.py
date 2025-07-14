@@ -68,6 +68,9 @@ class SMAAgent(BaseAgent):
         3. Only recalculate when new data arrives
         4. Early exit for insufficient data
         """
+        # Send heartbeat to indicate agent is active
+        await self._send_heartbeat()
+        
         signals = []
         
         try:
@@ -247,6 +250,9 @@ class SMAAgent(BaseAgent):
         self.logger.info(
             f"Fill received: {side} {quantity} {symbol} @ {price}"
         )
+        
+        # Send notification
+        await self._notify_fill(fill)
         
         # Update internal tracking if needed
         # This is where you might update position tracking, P&L calculation, etc.

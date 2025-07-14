@@ -6,6 +6,21 @@ All trading agents must inherit from this class.
 from abc import ABC, abstractmethod
 from typing import Dict, List, Any
 import asyncio
+import logging
+import sys
+import os
+
+# Add tools to Python path
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+
+try:
+    from tools import notify_fill, register_heartbeat_source, send_heartbeat, deregister_heartbeat_source
+except ImportError:
+    # Fallback if tools not available
+    async def notify_fill(fill): return {'slack': False, 'email': False}
+    async def register_heartbeat_source(name): pass
+    async def send_heartbeat(name): pass
+    async def deregister_heartbeat_source(name): pass
 
 
 class BaseAgent(ABC):
@@ -22,6 +37,8 @@ class BaseAgent(ABC):
         self.name = name
         self.is_active = True
         self.risk_limits = {}
+        self.logger = logging.getLogger(f"{self.__class__.__name__}({name})")
+        self._heartbeat_registered = False
         
     @abstractmethod
     async def generate_signals(self, snapshot: dict) -> List[dict]:
@@ -90,8 +107,43 @@ class BaseAgent(ABC):
             'risk_limits': self.risk_limits
         }
     
+    async def _ensure_heartbeat_registered(self) -> None:
+        """Ensure heartbeat is registered for this agent."""
+        if not self._heartbeat_registered:
+            try:
+                await register_heartbeat_source(self.name)
+                self._heartbeat_registered = True
+            except Exception as e:
+                self.logger.warning(f"Failed to register heartbeat: {e}")
+    
+    async def _send_heartbeat(self) -> None:
+        """Send heartbeat signal."""
+        try:
+            await self._ensure_heartbeat_registered()
+            await send_heartbeat(self.name)
+        except Exception as e:
+            self.logger.warning(f"Failed to send heartbeat: {e}")
+    
+    async def _notify_fill(self, fill: dict) -> None:
+        """Send fill notification."""
+        try:
+            result = await notify_fill(fill)
+            if result.get('slack') or result.get('email'):
+                self.logger.info(f"Fill notification sent: {result}")
+        except Exception as e:
+            self.logger.warning(f"Failed to send fill notification: {e}")
+
     async def shutdown(self) -> None:
         """Gracefully shutdown the agent."""
         self.is_active = False
+        
+        # Deregister heartbeat
+        if self._heartbeat_registered:
+            try:
+                await deregister_heartbeat_source(self.name)
+                self._heartbeat_registered = False
+            except Exception as e:
+                self.logger.warning(f"Failed to deregister heartbeat: {e}")
+        
         # Override in subclasses for cleanup
         pass
