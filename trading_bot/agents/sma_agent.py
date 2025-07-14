@@ -6,7 +6,6 @@ High-performance implementation with optimized calculations.
 import asyncio
 from typing import List, Dict, Any
 from datetime import datetime, timedelta
-import logging
 
 # Try to import pandas/numpy for optimized performance
 try:
@@ -87,7 +86,9 @@ class SMAAgent(BaseAgent):
             
         return signals
     
-    async def _generate_signal_for_symbol(self, symbol: str, price_data: dict, current_position: float) -> dict:
+    async def _generate_signal_for_symbol(
+        self, symbol: str, price_data: dict, current_position: float
+    ) -> dict:
         """Generate signal for a single symbol with performance optimizations."""
         
         # Extract price series
@@ -166,9 +167,16 @@ class SMAAgent(BaseAgent):
             # Simple fallback without pandas
             return [float(item['close']) for item in historical_data]
     
-    def _detect_crossover(self, current_fast: float, current_slow: float, 
-                         prev_fast: float, prev_slow: float,
-                         current_position: float, symbol: str, current_price: float) -> dict:
+    def _detect_crossover(
+        self,
+        current_fast: float,
+        current_slow: float,
+        prev_fast: float,
+        prev_slow: float,
+        current_position: float,
+        symbol: str,
+        current_price: float,
+    ) -> dict:
         """Detect SMA crossover and generate appropriate signal."""
         
         # Bullish crossover: fast SMA crosses above slow SMA
