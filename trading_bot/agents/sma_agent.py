@@ -4,6 +4,7 @@ High-performance implementation with optimized calculations.
 """
 
 import asyncio
+import logging
 from typing import List, Dict, Any
 from datetime import datetime, timedelta
 

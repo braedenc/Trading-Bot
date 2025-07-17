@@ -12,6 +12,7 @@ select = [
 
 # Ignore specific rules that are too strict for this project
 ignore = [
+    "E402",  # Module level import not at top of file
     "E701",  # Multiple statements on one line (colon)
     "E702",  # Multiple statements on one line (semicolon)
     "F401",  # Imported but unused (we have conditional imports)
@@ -28,8 +29,10 @@ exclude = [
     "venv",
     "build",
     "dist",
-    "external",
-    "%USERPROFILE%",
+    "external/**",
+    "%USERPROFILE%/**",
+    "run_agent_advanced.py",
+    "run_agent_multi_strategy.py",
 ]
 
 # Allow autofix for safe fixes
