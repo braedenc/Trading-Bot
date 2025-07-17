@@ -67,7 +67,7 @@ def test_sma_calculation():
     prev_prices = [100, 102, 98, 105, 103, 107, 104, 108, 106]
     prev_sma_5 = simple_sma(prev_prices, 5)
     
-    print(f"\nCrossover test:")
+    print("\nCrossover test:")
     print(f"Previous 5-SMA: {prev_sma_5:.2f}")
     print(f"Current 5-SMA: {sma_5:.2f}")
     print(f"Current 10-SMA: {sma_10:.2f}")
@@ -113,7 +113,7 @@ def test_performance():
     print(f"Average time per calculation: {calc_time/len(sma_results)*1000:.4f} ms")
     
     # Show sample results
-    print(f"\nSample results (last 5):")
+    print("\nSample results (last 5):")
     for i, (sma_10, sma_20) in enumerate(sma_results[-5:]):
         print(f"  Point {len(sma_results)-5+i}: SMA10={sma_10:.2f}, SMA20={sma_20:.2f}")
 
