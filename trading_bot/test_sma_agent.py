@@ -7,6 +7,7 @@ import asyncio
 import time
 import sys
 import os
+import pytest
 from datetime import datetime, timedelta
 import random
 
@@ -41,6 +42,7 @@ def generate_mock_price_data(symbol: str, days: int = 100) -> dict:
     }
 
 
+@pytest.mark.asyncio
 async def test_sma_agent_performance():
     """Test the SMA agent with various scenarios."""
     

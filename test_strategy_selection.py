@@ -5,6 +5,7 @@ Test script to demonstrate strategy selection functionality
 
 import sys
 import asyncio
+import pytest
 sys.path.append('.')
 
 from trading_bot.test_sma_simple import generate_mock_price_data
@@ -38,6 +39,7 @@ def discover_strategies():
     
     return strategies
 
+@pytest.mark.asyncio
 async def test_strategy_comparison():
     """Test multiple strategies side by side."""
     print("⚖️  STRATEGY COMPARISON TEST")
@@ -112,6 +114,7 @@ async def test_strategy_comparison():
     
     print("\n✅ Strategy comparison complete!")
 
+@pytest.mark.asyncio
 async def test_paper_trading_with_strategy():
     """Test paper trading with strategy selection."""
     print("📊 PAPER TRADING WITH MULTIPLE STRATEGIES")
