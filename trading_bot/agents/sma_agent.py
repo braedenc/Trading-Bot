@@ -5,7 +5,7 @@ High-performance implementation with optimized calculations.
 
 import asyncio
 import logging
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from datetime import datetime, timedelta
 
 # Try to import pandas/numpy for optimized performance
