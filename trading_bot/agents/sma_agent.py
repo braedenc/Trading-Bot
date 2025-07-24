@@ -4,7 +4,7 @@ High-performance implementation with optimized calculations.
 """
 
 import asyncio
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from datetime import datetime, timedelta
 import logging
 
@@ -168,7 +168,7 @@ class SMAAgent(BaseAgent):
     
     def _detect_crossover(self, current_fast: float, current_slow: float, 
                          prev_fast: float, prev_slow: float,
-                         current_position: float, symbol: str, current_price: float) -> dict:
+                         current_position: float, symbol: str, current_price: float) -> Optional[dict]:
         """Detect SMA crossover and generate appropriate signal."""
         
         # Bullish crossover: fast SMA crosses above slow SMA
