@@ -17,4 +17,4 @@ See [DEVELOPMENT_WORKFLOW.md](DEVELOPMENT_WORKFLOW.md) for proper version contro
 - `./setup_alerting_system.sh` - Setup Alerting System branch
 - `./setup_ci_cd_pipeline.sh` - Setup CI/CD Pipeline branch
 
-- ![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/braedenc/Trading-Bot?utm_source=oss&utm_medium=github&utm_campaign=braedenc%2FTrading-Bot&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/braedenc/Trading-Bot?utm_source=oss&utm_medium=github&utm_campaign=braedenc%2FTrading-Bot&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
