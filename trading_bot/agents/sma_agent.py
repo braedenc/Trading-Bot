@@ -60,13 +60,13 @@ class SMAAgent(BaseAgent):
         
     async def generate_signals(self, snapshot: dict) -> List[dict]:
         """
-        Generate SMA crossover signals.
+        Asynchronously generates trading signals for all symbols in the provided market snapshot using an SMA crossover strategy.
         
-        Performance optimizations:
-        1. Cache price data and SMA calculations
-        2. Use vectorized pandas operations
-        3. Only recalculate when new data arrives
-        4. Early exit for insufficient data
+        Parameters:
+            snapshot (dict): Market data containing price history and current positions.
+        
+        Returns:
+            List[dict]: A list of trading signals generated for each symbol based on SMA crossovers.
         """
         signals = []
         
@@ -90,7 +90,12 @@ class SMAAgent(BaseAgent):
     async def _generate_signal_for_symbol(
         self, symbol: str, price_data: dict, current_position: float
     ) -> dict:
-        """Generate signal for a single symbol with performance optimizations."""
+        """
+        Asynchronously generates a trading signal for a single symbol based on fast and slow simple moving average (SMA) crossovers.
+        
+        Returns:
+            dict or None: A signal dictionary if a crossover is detected; otherwise, None.
+        """
         
         # Extract price series
         if 'historical' not in price_data or len(price_data['historical']) < self.min_data_points:
@@ -147,7 +152,11 @@ class SMAAgent(BaseAgent):
         return sum(prices[-period:]) / period
     
     def _create_price_dataframe(self, historical_data: List[dict]):
-        """Convert historical price data to DataFrame or simple list based on availability."""
+        """
+        Convert historical price data into a pandas DataFrame if available, otherwise return a list of close prices.
+        
+        If pandas is available, the returned DataFrame includes timestamp, close, and volume columns sorted by timestamp. If not, returns a list of close prices as floats.
+        """
         
         if HAS_PANDAS:
             # Use pandas for optimized performance
@@ -178,7 +187,14 @@ class SMAAgent(BaseAgent):
         symbol: str,
         current_price: float,
     ) -> dict:
-        """Detect SMA crossover and generate appropriate signal."""
+        """
+        Detects bullish or bearish SMA crossovers and generates a trading signal if conditions are met.
+        
+        A buy signal is generated when the fast SMA crosses above the slow SMA and the agent is not currently long. A sell signal is generated when the fast SMA crosses below the slow SMA and the agent is currently holding a position. The signal includes action type, quantity, confidence score, reasoning, and relevant metadata.
+        
+        Returns:
+            signal (dict or None): A dictionary containing the trading signal if a crossover is detected and action is warranted; otherwise, None.
+        """
         
         # Bullish crossover: fast SMA crosses above slow SMA
         bullish_crossover = (prev_fast <= prev_slow) and (current_fast > current_slow)
