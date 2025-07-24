@@ -49,11 +49,7 @@ def generate_mock_price_data(symbol: str, days: int = 100) -> dict:
     }
 
 def test_sma_calculation():
-    """
-    Test the simple moving average (SMA) calculation and crossover detection logic using sample price data.
-    
-    Prints calculated 5-period and 10-period SMAs, then checks for bullish or bearish crossover events by comparing previous and current 5-period SMAs against the 10-period SMA.
-    """
+    """Test the SMA calculation logic."""
     print("Testing SMA calculation...")
     
     # Test data
@@ -84,11 +80,7 @@ def test_sma_calculation():
         print("No crossover detected")
 
 def test_performance():
-    """
-    Measures and reports the performance of simple moving average (SMA) calculations on a large set of mock price data.
-    
-    Generates 10,000 days of simulated price data, times the data generation and SMA calculations, and prints summary statistics and sample results.
-    """
+    """Test performance with large dataset."""
     print("\n" + "="*50)
     print("PERFORMANCE TEST")
     print("="*50)
