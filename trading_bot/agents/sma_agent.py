@@ -186,7 +186,7 @@ class SMAAgent(BaseAgent):
         current_position: float,
         symbol: str,
         current_price: float,
-    ) -> dict:
+    ) -> Optional[dict]:
         """
         Detects bullish or bearish SMA crossovers and generates a trading signal if conditions are met.
         
