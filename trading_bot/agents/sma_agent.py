@@ -89,7 +89,7 @@ class SMAAgent(BaseAgent):
     
     async def _generate_signal_for_symbol(
         self, symbol: str, price_data: dict, current_position: float
-    ) -> dict:
+    ) -> Optional[dict]:
         """
         Asynchronously generates a trading signal for a single symbol based on fast and slow simple moving average (SMA) crossovers.
         
