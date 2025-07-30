@@ -1,0 +1,52 @@
+# Trading Bot Configuration
+# Defines strategies to load and execute using the plugin loader system
+
+strategies:
+  - name: "SMA_Cross"
+    path: "trading_bot.agents.sma_agent:SMAAgent"
+    params:
+      fast_period: 10
+      slow_period: 20
+
+  - name: "Technical_Analysis"
+    path: "trading_bot.agents.optimized_technicals:OptimizedTechnicalAgent"
+    params: {}
+
+  - name: "GitHub_AI_Strategy"
+    path: "trading_bot.agents.github_agent:GitHubAgent"
+    params:
+      strategy_name: "ai_hedge_fund"
+
+  # Note: ai-hedge-fund uses a different architecture (functions vs BaseAgent classes)
+  # External strategies would need adapter wrappers to work with our plugin system
+  # Example of how external strategies could be configured:
+  # - name: "AI_Hedge_Fund_Technical"
+  #   path: "external.ai_hedge_fund.src.agents.technicals:technical_analyst_agent"
+  #   params:
+  #     analysis_type: "technical"
+
+# Execution settings
+execution:
+  max_concurrent_strategies: 10
+  timeout_seconds: 30
+  retry_failed_strategies: true
+
+# Risk management settings
+risk_limits:
+  max_position_size: 1000000
+  max_daily_loss: 50000
+  max_leverage: 3.0
+  allowed_symbols:
+    - "AAPL"
+    - "GOOGL" 
+    - "MSFT"
+    - "TSLA"
+    - "NVDA"
+    - "AMZN"
+
+# Logging configuration
+logging:
+  level: "INFO"
+  file: "trading_bot.log"
+  max_size_mb: 100
+  backup_count: 5
