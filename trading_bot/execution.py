@@ -1,394 +1,232 @@
 """
-Trading Bot Execution Engine
-
-Loads and executes trading strategies using the plugin loader system.
-Supports dynamic strategy loading from configuration files.
+Trading Bot Execution Engine with Agent Heartbeat System
 """
 
 import asyncio
 import logging
-import yaml
+import traceback
 from typing import Dict, List, Any, Optional
 from datetime import datetime
-from pathlib import Path
+import json
+import os
 
-from .loader.plugin_loader import load_strategy, PluginLoaderError
-from .base_agent import BaseAgent
+# Supabase client
+try:
+    from supabase import create_client, Client
+    HAS_SUPABASE = True
+except ImportError:
+    HAS_SUPABASE = False
+    # Define a placeholder type for type hints when supabase is not available
+    from typing import Any as Client
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+from trading_bot.base_agent import BaseAgent
 
 
-class StrategyExecutionError(Exception):
-    """Exception raised during strategy execution."""
-    pass
-
-
-class StrategyExecutor:
-    """
-    Executes trading strategies loaded via plugin loader.
-    """
+class HeartbeatManager:
+    """Manages agent heartbeats and writes to Supabase"""
     
-    def __init__(self, config_path: Optional[str] = None):
-        """
-        Initialize the strategy executor.
+    def __init__(self, supabase_url: Optional[str] = None, supabase_key: Optional[str] = None):
+        self.logger = logging.getLogger(__name__)
+        self.supabase: Optional[Client] = None
         
-        Args:
-            config_path: Path to configuration file (default: config.yaml)
-        """
-        self.config_path = config_path or "config.yaml"
-        self.strategies: Dict[str, BaseAgent] = {}
-        self.config: Dict[str, Any] = {}
-        self.is_running = False
-        
-    def load_config(self) -> None:
-        """Load configuration from YAML file."""
-        try:
-            config_file = Path(self.config_path)
-            if not config_file.exists():
-                raise StrategyExecutionError(f"Configuration file not found: {self.config_path}")
-            
-            with open(config_file, 'r') as f:
-                self.config = yaml.safe_load(f)
-            
-            logger.info(f"Loaded configuration from {self.config_path}")
-            
-        except yaml.YAMLError as e:
-            raise StrategyExecutionError(f"Invalid YAML in {self.config_path}: {e}")
-        except Exception as e:
-            raise StrategyExecutionError(f"Failed to load config {self.config_path}: {e}")
-    
-    def load_strategies(self) -> None:
-        """Load all strategies from configuration."""
-        if not self.config:
-            self.load_config()
-        
-        strategies_config = self.config.get('strategies', [])
-        if not strategies_config:
-            raise StrategyExecutionError("No strategies defined in configuration")
-        
-        logger.info(f"Loading {len(strategies_config)} strategies...")
-        
-        for strategy_config in strategies_config:
+        # Initialize Supabase client if credentials are available
+        if HAS_SUPABASE and supabase_url and supabase_key:
             try:
-                self._load_single_strategy(strategy_config)
+                self.supabase = create_client(supabase_url, supabase_key)
+                self.logger.info("✅ Supabase client initialized")
             except Exception as e:
-                logger.error(f"Failed to load strategy {strategy_config.get('name', 'unknown')}: {e}")
-                # Continue loading other strategies
-        
-        if not self.strategies:
-            raise StrategyExecutionError("No strategies loaded successfully")
-        
-        logger.info(f"Successfully loaded {len(self.strategies)} strategies")
-    
-    def _load_single_strategy(self, strategy_config: Dict[str, Any]) -> None:
-        """
-        Load a single strategy from configuration.
-        
-        Args:
-            strategy_config: Strategy configuration dict
-        """
-        name = strategy_config.get('name')
-        path = strategy_config.get('path')
-        params = strategy_config.get('params', {})
-        
-        if not name:
-            raise StrategyExecutionError("Strategy missing 'name' field")
-        if not path:
-            raise StrategyExecutionError(f"Strategy '{name}' missing 'path' field")
-        
-        logger.info(f"Loading strategy '{name}' from path '{path}'")
-        
-        # Load the strategy class
-        strategy_class = load_strategy(path)
-        
-        # Verify it inherits from BaseAgent
-        if not issubclass(strategy_class, BaseAgent):
-            raise StrategyExecutionError(
-                f"Strategy class {strategy_class.__name__} must inherit from BaseAgent"
-            )
-        
-        # Create instance with parameters
-        try:
-            if params:
-                strategy_instance = strategy_class(name=name, **params)
-            else:
-                strategy_instance = strategy_class(name=name)
-        except TypeError as e:
-            # Try without name parameter for backwards compatibility
-            try:
-                if params:
-                    strategy_instance = strategy_class(**params)
-                else:
-                    strategy_instance = strategy_class(name)
-                # Set name manually if the instance supports it
-                if hasattr(strategy_instance, 'name'):
-                    strategy_instance.name = name
-            except Exception:
-                raise StrategyExecutionError(f"Failed to create strategy '{name}': {e}")
-        
-        self.strategies[name] = strategy_instance
-        logger.info(f"Successfully loaded strategy '{name}'")
-    
-    async def execute_strategies(self, market_snapshot: Dict[str, Any]) -> Dict[str, List[Dict]]:
-        """
-        Execute all loaded strategies with market data.
-        
-        Args:
-            market_snapshot: Market data snapshot
-            
-        Returns:
-            Dict mapping strategy names to their generated signals
-        """
-        if not self.strategies:
-            raise StrategyExecutionError("No strategies loaded")
-        
-        results = {}
-        
-        # Execute strategies concurrently
-        tasks = []
-        for name, strategy in self.strategies.items():
-            task = asyncio.create_task(
-                self._execute_single_strategy(name, strategy, market_snapshot)
-            )
-            tasks.append((name, task))
-        
-        # Wait for all strategies to complete
-        for name, task in tasks:
-            try:
-                signals = await task
-                results[name] = signals
-                logger.debug(f"Strategy '{name}' generated {len(signals)} signals")
-            except Exception as e:
-                logger.error(f"Strategy '{name}' execution failed: {e}")
-                results[name] = []  # Empty signals on failure
-        
-        return results
-    
-    async def _execute_single_strategy(
-        self, 
-        name: str, 
-        strategy: BaseAgent, 
-        market_snapshot: Dict[str, Any]
-    ) -> List[Dict]:
-        """
-        Execute a single strategy.
-        
-        Args:
-            name: Strategy name
-            strategy: Strategy instance
-            market_snapshot: Market data snapshot
-            
-        Returns:
-            List of signals generated by the strategy
-        """
-        try:
-            if not strategy.is_active:
-                logger.warning(f"Strategy '{name}' is inactive, skipping")
-                return []
-            
-            signals = await strategy.generate_signals(market_snapshot)
-            
-            # Validate signals format
-            if not isinstance(signals, list):
-                logger.error(f"Strategy '{name}' returned invalid signals format (not a list)")
-                return []
-            
-            # Add strategy metadata to each signal
-            for signal in signals:
-                if isinstance(signal, dict):
-                    signal['strategy'] = name
-                    signal['timestamp'] = datetime.now().isoformat()
-            
-            return signals
-            
-        except Exception as e:
-            logger.error(f"Error executing strategy '{name}': {e}")
-            return []
-    
-    async def notify_fills(self, fills: List[Dict[str, Any]]) -> None:
-        """
-        Notify all strategies of order fills.
-        
-        Args:
-            fills: List of fill notifications
-        """
-        if not fills:
-            return
-        
-        tasks = []
-        for name, strategy in self.strategies.items():
-            for fill in fills:
-                task = asyncio.create_task(
-                    self._notify_single_strategy_fill(name, strategy, fill)
-                )
-                tasks.append(task)
-        
-        if tasks:
-            await asyncio.gather(*tasks, return_exceptions=True)
-    
-    async def _notify_single_strategy_fill(
-        self, 
-        name: str, 
-        strategy: BaseAgent, 
-        fill: Dict[str, Any]
-    ) -> None:
-        """Notify a single strategy of a fill."""
-        try:
-            await strategy.on_fill(fill)
-        except Exception as e:
-            logger.error(f"Error notifying strategy '{name}' of fill: {e}")
-    
-    async def update_risk_limits(self, limits: Dict[str, Any]) -> None:
-        """
-        Update risk limits for all strategies.
-        
-        Args:
-            limits: New risk limits
-        """
-        tasks = []
-        for name, strategy in self.strategies.items():
-            task = asyncio.create_task(
-                self._update_single_strategy_limits(name, strategy, limits)
-            )
-            tasks.append(task)
-        
-        if tasks:
-            await asyncio.gather(*tasks, return_exceptions=True)
-    
-    async def _update_single_strategy_limits(
-        self, 
-        name: str, 
-        strategy: BaseAgent, 
-        limits: Dict[str, Any]
-    ) -> None:
-        """Update risk limits for a single strategy."""
-        try:
-            await strategy.on_limit_update(limits)
-            strategy.set_risk_limits(limits)
-        except Exception as e:
-            logger.error(f"Error updating limits for strategy '{name}': {e}")
-    
-    def get_strategy_status(self) -> Dict[str, Dict[str, Any]]:
-        """Get status of all loaded strategies."""
-        status = {}
-        for name, strategy in self.strategies.items():
-            try:
-                status[name] = strategy.get_status()
-            except Exception as e:
-                status[name] = {
-                    'name': name,
-                    'error': str(e),
-                    'is_active': False
-                }
-        return status
-    
-    async def shutdown(self) -> None:
-        """Gracefully shutdown all strategies."""
-        logger.info("Shutting down strategy executor...")
-        
-        tasks = []
-        for name, strategy in self.strategies.items():
-            task = asyncio.create_task(strategy.shutdown())
-            tasks.append((name, task))
-        
-        # Wait for all strategies to shutdown
-        for name, task in tasks:
-            try:
-                await task
-                logger.debug(f"Strategy '{name}' shutdown complete")
-            except Exception as e:
-                logger.error(f"Error shutting down strategy '{name}': {e}")
-        
-        self.strategies.clear()
-        self.is_running = False
-        logger.info("Strategy executor shutdown complete")
-
-
-# Convenience functions for common usage patterns
-async def run_single_strategy(
-    strategy_path: str, 
-    market_snapshot: Dict[str, Any],
-    params: Optional[Dict[str, Any]] = None
-) -> List[Dict]:
-    """
-    Run a single strategy without configuration file.
-    
-    Args:
-        strategy_path: Path to strategy class
-        market_snapshot: Market data snapshot
-        params: Optional parameters for strategy initialization
-        
-    Returns:
-        List of signals generated by the strategy
-    """
-    try:
-        strategy_class = load_strategy(strategy_path)
-        
-        # Create instance
-        if params:
-            strategy = strategy_class(**params)
+                self.logger.error(f"❌ Failed to initialize Supabase client: {e}")
         else:
-            strategy = strategy_class()
+            if not HAS_SUPABASE:
+                self.logger.warning("⚠️  Supabase package not available - heartbeats will be logged only")
+            else:
+                self.logger.warning("⚠️  Supabase credentials not provided - heartbeats will be logged only")
+    
+    async def heartbeat(self, agent_name: str, status: str = "healthy", last_error: Optional[str] = None, metadata: Optional[Dict] = None) -> bool:
+        """
+        Record agent heartbeat
         
-        # Execute
-        signals = await strategy.generate_signals(market_snapshot)
+        Args:
+            agent_name: Name of the agent
+            status: Agent status ('healthy', 'error', 'warning')
+            last_error: Error message if any
+            metadata: Additional metadata
+            
+        Returns:
+            True if heartbeat was recorded successfully
+        """
+        timestamp = datetime.utcnow()
         
-        # Cleanup
-        await strategy.shutdown()
+        # Always log the heartbeat
+        if status == "healthy":
+            self.logger.info(f"💓 {agent_name} heartbeat: {status}")
+        elif status == "warning":
+            self.logger.warning(f"⚠️  {agent_name} heartbeat: {status} - {last_error}")
+        else:
+            self.logger.error(f"❌ {agent_name} heartbeat: {status} - {last_error}")
+        
+        # Write to Supabase if available
+        if self.supabase:
+            try:
+                data = {
+                    "agent_name": agent_name,
+                    "timestamp": timestamp.isoformat(),
+                    "status": status,
+                    "last_error": last_error,
+                    "metadata": metadata or {}
+                }
+
+                result = self.supabase.table("trading_agent_heartbeats").insert(data).execute()
+                self.logger.debug(f"📝 Heartbeat stored in Supabase for {agent_name}")
+
+            except Exception as e:
+                self.logger.error(f"❌ Failed to store heartbeat in Supabase: {e}")
+                return False
+        
+        return True  # Still consider successful if logged locally
+
+
+class AgentExecutor:
+    """Executes agents with heartbeat monitoring and exception handling"""
+    
+    def __init__(self, heartbeat_manager: HeartbeatManager):
+        self.heartbeat_manager = heartbeat_manager
+        self.logger = logging.getLogger(__name__)
+
+    async def execute_agent_with_heartbeat(self, agent: BaseAgent, snapshot: Dict[str, Any]) -> List[Dict]:
+        """
+        Execute agent's generate_signals with heartbeat monitoring
+        
+        Args:
+            agent: The trading agent to execute
+            snapshot: Market data snapshot
+            
+        Returns:
+            List of signals generated by the agent
+        """
+        agent_name = agent.name
+        signals = []
+        last_error = None
+        status = "healthy"
+
+        try:
+            # Record heartbeat before execution
+            await self.heartbeat_manager.heartbeat(
+                agent_name,
+                "healthy",
+                metadata={"execution_start": datetime.utcnow().isoformat()}
+            )
+            
+            # Execute the agent
+            self.logger.debug(f"🔄 Executing {agent_name}...")
+            signals = await agent.generate_signals(snapshot)
+            
+            # Record successful heartbeat
+            await self.heartbeat_manager.heartbeat(
+                agent_name,
+                "healthy",
+                metadata={
+                    "signals_generated": len(signals),
+                    "execution_end": datetime.utcnow().isoformat()
+                }
+            )
+            
+            self.logger.info(f"✅ {agent_name} executed successfully - generated {len(signals)} signals")
+            
+        except Exception as e:
+            # Capture the full exception details
+            error_msg = f"{type(e).__name__}: {str(e)}"
+            last_error = error_msg
+            status = "error"
+
+            # Log the exception
+            self.logger.error(f"❌ {agent_name} execution failed: {error_msg}")
+            self.logger.debug(f"Full traceback:\n{traceback.format_exc()}")
+
+            # Record error heartbeat
+            await self.heartbeat_manager.heartbeat(
+                agent_name,
+                "error",
+                last_error,
+                {
+                    "error_type": type(e).__name__,
+                    "traceback": traceback.format_exc(),
+                    "execution_failed": datetime.utcnow().isoformat()
+                }
+            )
+
+            # Don't re-raise - let the system continue with other agents
+            signals = []
         
         return signals
+    
+    async def execute_multiple_agents(self, agents: List[BaseAgent], snapshot: Dict[str, Any]) -> Dict[str, List[Dict]]:
+        """
+        Execute multiple agents in parallel with heartbeat monitoring
         
-    except Exception as e:
-        logger.error(f"Failed to run strategy {strategy_path}: {e}")
-        return []
+        Args:
+            agents: List of agents to execute
+            snapshot: Market data snapshot
+
+        Returns:
+            Dictionary mapping agent names to their generated signals
+        """
+        self.logger.info(f"🚀 Executing {len(agents)} agents in parallel...")
+        
+        # Execute all agents in parallel
+        tasks = [
+            self.execute_agent_with_heartbeat(agent, snapshot)
+            for agent in agents
+        ]
+        
+        results = await asyncio.gather(*tasks, return_exceptions=True)
+        
+        # Organize results by agent name
+        agent_results = {}
+        for agent, result in zip(agents, results):
+            if isinstance(result, Exception):
+                self.logger.error(f"❌ Agent {agent.name} failed with exception: {result}")
+                agent_results[agent.name] = []
+            else:
+                agent_results[agent.name] = result
+        
+        return agent_results
 
 
-def create_sample_config(output_path: str = "config.yaml") -> None:
+# Global heartbeat manager instance
+heartbeat_manager = None
+
+def initialize_heartbeat_system(supabase_url: Optional[str] = None, supabase_key: Optional[str] = None) -> HeartbeatManager:
     """
-    Create a sample configuration file.
+    Initialize the global heartbeat system
     
     Args:
-        output_path: Where to save the sample config
+        supabase_url: Supabase project URL (from env if not provided)
+        supabase_key: Supabase anon key (from env if not provided)
+        
+    Returns:
+        HeartbeatManager instance
     """
-    sample_config = {
-        'strategies': [
-            {
-                'name': 'SMA_Cross',
-                'path': 'trading_bot.agents.sma_agent:SMAAgent',
-                'params': {
-                    'fast_period': 10,
-                    'slow_period': 20
-                }
-            },
-            {
-                'name': 'Technical_Analysis',
-                'path': 'trading_bot.agents.optimized_technicals:OptimizedTechnicalAgent',
-                'params': {}
-            },
-            {
-                'name': 'AI_Hedge_Fund',
-                'path': 'external.ai_hedge_fund.strategies.momentum:MomentumStrategy',
-                'params': {
-                    'lookback_period': 30,
-                    'threshold': 0.02
-                }
-            }
-        ],
-        'execution': {
-            'max_concurrent_strategies': 10,
-            'timeout_seconds': 30
-        },
-        'risk_limits': {
-            'max_position_size': 1000000,
-            'max_daily_loss': 50000,
-            'max_leverage': 3.0,
-            'allowed_symbols': ['AAPL', 'GOOGL', 'MSFT', 'TSLA']
-        }
-    }
+    global heartbeat_manager
     
-    with open(output_path, 'w') as f:
-        yaml.dump(sample_config, f, default_flow_style=False, sort_keys=False)
+    # Get credentials from environment if not provided
+    if not supabase_url:
+        supabase_url = os.getenv('SUPABASE_URL')
+    if not supabase_key:
+        supabase_key = os.getenv('SUPABASE_ANON_KEY')
     
-    logger.info(f"Sample configuration saved to {output_path}")
+    heartbeat_manager = HeartbeatManager(supabase_url, supabase_key)
+    return heartbeat_manager
+
+def get_heartbeat_manager() -> HeartbeatManager:
+    """Get the global heartbeat manager instance"""
+    global heartbeat_manager
+    if heartbeat_manager is None:
+        heartbeat_manager = initialize_heartbeat_system()
+    return heartbeat_manager
+
+# Convenience function for backward compatibility
+async def heartbeat(agent_name: str, status: str = "healthy", last_error: Optional[str] = None, metadata: Optional[Dict] = None) -> bool:
+    """Convenience function to record heartbeat using global manager"""
+    manager = get_heartbeat_manager()
+    return await manager.heartbeat(agent_name, status, last_error, metadata)
