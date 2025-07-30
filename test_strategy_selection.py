@@ -172,9 +172,10 @@ def main():
     print(f"\nRunning tests with {len(strategies)} strategies...")
     
     # Run tests
-    asyncio.run(test_paper_trading_with_strategy())
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(test_paper_trading_with_strategy())
     print("\n" + "="*60 + "\n")
-    asyncio.run(test_strategy_comparison())
+    loop.run_until_complete(test_strategy_comparison())
 
 if __name__ == "__main__":
     main()

@@ -10,50 +10,42 @@ import os
 import json
 
 def discover_available_strategies():
-    """Dynamically discover available trading strategies using plugin loader."""
-    from trading_bot.loader.plugin_loader import load_strategy, PluginLoaderError
-    
+    """Dynamically discover available trading strategies."""
     strategies = {}
     
-    # Define available strategies with their paths
-    strategy_configs = [
-        {
-            'key': 'sma',
+    try:
+        sys.path.append('.')
+        from trading_bot.agents.sma_agent import SMAAgent
+        strategies['sma'] = {
             'name': 'SMA Crossover',
-            'path': 'trading_bot.agents.sma_agent:SMAAgent',
+            'agent_class': SMAAgent,
             'description': 'Simple Moving Average crossover strategy',
             'params': {'fast_period': 10, 'slow_period': 20}
-        },
-        {
-            'key': 'github',
+        }
+    except ImportError:
+        pass
+
+    try:
+        from trading_bot.agents.github_agent import GitHubAgent
+        strategies['github'] = {
             'name': 'GitHub AI Strategy',
-            'path': 'trading_bot.agents.github_agent:GitHubAgent',
+            'agent_class': GitHubAgent,
             'description': 'AI hedge fund strategy from external repo',
             'params': {'strategy_name': 'ai_hedge_fund'}
-        },
-        {
-            'key': 'technical',
+        }
+    except ImportError:
+        pass
+
+    try:
+        from trading_bot.agents.optimized_technicals import OptimizedTechnicalAgent
+        strategies['technical'] = {
             'name': 'Optimized Technical',
-            'path': 'trading_bot.agents.optimized_technicals:OptimizedTechnicalAgent',
+            'agent_class': OptimizedTechnicalAgent,
             'description': 'Multi-indicator technical analysis',
             'params': {}
         }
-    ]
-    
-    # Load each strategy using the plugin loader
-    for config in strategy_configs:
-        try:
-            agent_class = load_strategy(config['path'])
-            strategies[config['key']] = {
-                'name': config['name'],
-                'agent_class': agent_class,
-                'description': config['description'],
-                'params': config['params']
-            }
-        except PluginLoaderError as e:
-            print(f"⚠️  Failed to load {config['name']}: {e}")
-        except Exception as e:
-            print(f"⚠️  Unexpected error loading {config['name']}: {e}")
+    except ImportError:
+        pass
     
     return strategies
 

@@ -180,4 +180,5 @@ async def test_sma_agent_performance():
 
 if __name__ == "__main__":
     # Run the async test
-    asyncio.run(test_sma_agent_performance())
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(test_sma_agent_performance())
