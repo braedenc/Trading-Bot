@@ -15,13 +15,13 @@ fatal: Pathspec 'trading_bot/agents/sma_agent.py' is in submodule 'trading_bot'
 Trading-Bot/
 ├── docs/                          # Documentation
 ├── external/
-│   └── ai-hedge-fund/            # External strategy (submodule)
+
 ├── trading_bot/                  # Main trading engine (regular directory)
 │   ├── base_agent.py            # Base class for all agents
 │   ├── agents/
 │   │   ├── __init__.py
 │   │   ├── sma_agent.py         # Your SMA strategy (optimized)
-│   │   ├── github_agent.py      # Wrapper for ai-hedge-fund
+
 │   │   └── optimized_technicals.py # Optimized technical analysis
 │   ├── debug_sma_performance.py # Performance debugging tool
 │   ├── quick_performance_fix.py # Performance patches
@@ -92,22 +92,7 @@ python3 trading_bot/test_sma_agent.py
 python3 trading_bot/debug_sma_performance.py
 ```
 
-## Integration with ai-hedge-fund
 
-The `GitHubAgent` class wraps the ai-hedge-fund strategy:
-
-```python
-from trading_bot.agents.github_agent import GitHubAgent
-
-# Create wrapper for ai-hedge-fund
-github_agent = GitHubAgent("ai_hedge_fund")
-
-# Use alongside SMA agent
-agents = [
-    SMAAgent(),
-    GitHubAgent("ai_hedge_fund")
-]
-```
 
 ## Architecture Benefits
 
@@ -145,7 +130,7 @@ agents = [
 
 ## Performance Comparison
 
-| Metric | Before (ai-hedge-fund) | After (SMA Agent) |
+| Metric | After (SMA Agent) |
 |--------|----------------------|-------------------|
 | Calculation time | ~2-3 seconds | ~0.03 ms |
 | Memory usage | High (multiple rolling windows) | Low (efficient caching) |
@@ -157,7 +142,7 @@ agents = [
 ### New Files
 - `trading_bot/base_agent.py` - Base class for all agents
 - `trading_bot/agents/sma_agent.py` - High-performance SMA agent
-- `trading_bot/agents/github_agent.py` - Wrapper for external strategies
+
 - `trading_bot/test_sma_simple.py` - Simple test without dependencies
 - `trading_bot/requirements.txt` - Dependencies
 

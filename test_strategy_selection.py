@@ -25,16 +25,7 @@ def discover_strategies():
     except ImportError:
         pass
     
-    try:
-        from trading_bot.agents.github_agent import GitHubAgent
-        strategies['github'] = {
-            'name': 'GitHub AI Strategy',
-            'agent_class': GitHubAgent,
-            'description': 'AI hedge fund strategy from external repo',
-            'params': {'strategy_name': 'ai_hedge_fund'}
-        }
-    except ImportError:
-        pass
+
     
     return strategies
 

@@ -17,7 +17,7 @@ def apply_performance_patches():
         os.path.dirname(__file__), 
         '..', 
         'external', 
-        'ai-hedge-fund', 
+     
         'src', 
         'agents', 
         'technicals.py'
@@ -168,7 +168,7 @@ def cache_indicator(func):
 """Quick test to verify the patches work correctly."""
 import sys
 import os
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'external', 'ai-hedge-fund'))
+
 
 try:
     from src.agents.technicals import technical_analyst_agent
@@ -263,8 +263,7 @@ def main():
         print("\n3. Use the optimized configuration:")
         print(f"   import {config_path}")
         print("\n4. If issues occur, restore from backup:")
-        print("   cp external/ai-hedge-fund/src/agents/technicals.py.backup \\")
-        print("      external/ai-hedge-fund/src/agents/technicals.py")
+        
     else:
         print("\n❌ Failed to apply patches")
         print("Please check the error messages above")
