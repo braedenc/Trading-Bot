@@ -14,8 +14,7 @@ import cProfile
 import pstats
 from io import StringIO
 
-# Add the external ai-hedge-fund to the path
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'external', 'ai-hedge-fund'))
+
 
 # Import the necessary modules
 try:

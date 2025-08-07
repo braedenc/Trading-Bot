@@ -17,9 +17,3 @@ try:
     __all__.append('OptimizedTechnicalAgent')
 except ImportError:
     pass
-
-try:
-    from .github_agent import GitHubAgent, create_github_agent
-    __all__.extend(['GitHubAgent', 'create_github_agent'])
-except ImportError:
-    pass

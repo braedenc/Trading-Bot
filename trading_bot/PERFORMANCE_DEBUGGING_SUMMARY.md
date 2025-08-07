@@ -101,15 +101,9 @@ SAMPLE_LARGE_DATA = True  # For datasets > 1000 points
 
 ## Testing the Improvements
 
-1. **Baseline Performance**:
-   ```bash
-   time python external/ai-hedge-fund/src/main.py --tickers AAPL --show-reasoning
-   ```
-
-2. **After Optimization**:
+1. **Performance Testing**:
    ```bash
    python trading_bot/quick_performance_fix.py
-   time python external/ai-hedge-fund/src/main.py --tickers AAPL --show-reasoning
    ```
 
 3. **Compare Results**:
@@ -120,7 +114,7 @@ SAMPLE_LARGE_DATA = True  # For datasets > 1000 points
 
 1. **Install dependencies** (if needed):
    ```bash
-   cd external/ai-hedge-fund
+   
    pip install -r requirements.txt
    ```
 

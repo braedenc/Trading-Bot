@@ -8,7 +8,7 @@ Data: 1-minute OHLCV bars + configurable tick buffer (default 20)
 
 Agents: Live in trading_bot/agents/, inherit BaseAgent.
 
-External strategy: Upstream ai-hedge-fund lives in external/ai-hedge-fund/, wrapped by GitHubAgent.
+
 
 Dashboard: Lovable.dev front-end, Supabase back-end.
 
@@ -20,7 +20,7 @@ Copy
 Edit
 Trading-Bot/
 ├── docs/                 <-- PRD + other design notes
-├── external/ai-hedge-fund (submodule)
+
 ├── trading_bot/          <-- engine + agents
 ├── infra/supabase/       <-- schema.sql + future migrations
 ├── requirements.txt

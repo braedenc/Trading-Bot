@@ -145,11 +145,6 @@ agents:
                   print(f"❌ SMAAgent import/creation failed: {e}")
                   return False
               
-              try:
-                  from trading_bot.agents.github_agent import GitHubAgent
-                  print("✅ GitHubAgent imported successfully")
-              except Exception as e:
-                  print(f"⚠️  GitHubAgent import failed: {e}")
               
               try:
                   from trading_bot.agents.optimized_technicals import OptimizedTechnicalAgent
