@@ -1,0 +1,87 @@
+# ---------- Phase 0 ----------
+- id: P0.4
+  phase: 0
+  title: Baseline Tag v0.1-pre-agent
+  design_contract:
+    file: null
+    steps:
+      - run: git fetch origin main
+      - run: git tag v0.1-pre-agent origin/main
+      - run: git push --tags
+      - run: git ls-remote --tags origin "v0.1-*"
+    acceptance:
+      - Remote tag v0.1-pre-agent exists and is visible in GitHub UI
+      - Verification log pasted into PR
+
+# ---------- Phase 1 ----------
+- id: P1.2
+  phase: 1
+  title: GitHub Actions CI and Rubric Gates
+  design_contract:
+    file: .github/workflows/ci.yml
+    constraints:
+      - Jobs order: lint → typecheck → test (coverage.xml) → security → build → spec-enforcer
+      - Coverage: lines >= 85%, branches >= 80%
+      - Required checks on main: lint,typecheck,test,security,build,spec-enforcer
+      - Local gate: `make ci-local` passes on clean checkout
+    tests:
+      - CI is green on this PR and on main
+    acceptance:
+      - PR includes `Card: P1.2` in body
+      - coverage.xml present
+      - Spec Enforcer score >= 9/10
+
+# ---------- Phase 2 (next up) ----------
+- id: P2.1.1
+  parent_id: P2.1
+  title: Engine core class
+  design_contract:
+    file: trading_bot/engine/core.py
+    interface: |
+      class Engine:
+          async def start(self): ...
+          async def stop(self): ...
+          def register_agent(self, agent: "BaseStrategy"): ...
+    constraints:
+      - asyncio.TaskGroup for lifecycle; cancellation on stop()
+      - asyncio.Queue(maxsize=10000) for ticks; export queue_depth metric
+      - No global state; no sync I/O in loop
+    tests:
+      - Simulated 100k ticks; p95 processing latency < 2 ms
+      - At least one integration test
+    acceptance:
+      - PR includes `Card: P2.1.1`
+
+- id: P2.2.1
+  parent_id: P2.2
+  title: FinnhubAdapter
+  design_contract:
+    file: trading_bot/data/finnhub_adapter.py
+    interface: |
+      class FinnhubAdapter(BaseDataAdapter):
+          async def subscribe(self, symbols: list[str]) -> AsyncIterator[Bar]: ...
+    constraints:
+      - aiohttp session reuse; HTTP429 backoff (0.5s * 2^n, max 6)
+      - Emit audit_event(type="data_error") on 429s/timeouts
+    tests:
+      - aioresponses mock; branch coverage >= 95%
+      - property-based test for random symbol sets
+    acceptance:
+      - PR includes `Card: P2.2.1`
+
+- id: P2.4.1
+  parent_id: P2.4
+  title: RiskGuard middleware
+  design_contract:
+    file: trading_bot/risk/guards.py
+    interface: |
+      class RiskGuard:
+          def check(self, order: OrderCtx) -> None  # raises RiskError
+    constraints:
+      - Use Decimal/integer minor units; no float money
+      - Max notional via env MAX_NOTIONAL; price band ±3×ATR(14)
+    tests:
+      - Parametrized: pass, notional breach, price-band breach
+      - Property-based: random orders never bypass rules
+    acceptance:
+      - PR includes `Card: P2.4.1`
