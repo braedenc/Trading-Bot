@@ -1,0 +1,118 @@
+name: ci
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12.4' }
+      - run: pip install ruff black isort
+      - run: ruff check .
+      - run: black --check .
+      - run: isort --check-only .
+
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12.4' }
+      - run: pip install mypy
+      - run: mypy --strict trading_bot || (echo 'mypy failed' && exit 1)
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12.4' }
+      - run: pip install -r requirements.txt || true
+      - run: pip install pytest pytest-cov hypothesis pyyaml
+      - run: pytest --cov --cov-report=xml
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12.4' }
+      - run: pip install bandit
+      - run: bandit -q -r trading_bot -ll
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12.4' }
+      - run: docker build -t trading-bot:ci .
+
+  spec-enforcer:
+    runs-on: ubuntu-latest
+    needs: [lint, typecheck, test, security, build]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12.4' }
+      - name: Extract Card ID from PR body
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          ID=$(jq -r '.pull_request.body|capture("Card: (?<id>[A-Za-z0-9_.:-]+)")?.id // ""' "$GITHUB_EVENT_PATH")
+          echo "CARD_ID=$ID" >> $GITHUB_ENV
+      - name: Spec Enforcer
+        if: ${{ env.CARD_ID != '' }}
+        run: |
+          python tools/spec_enforcer.py \
+            --card-id "${{ env.CARD_ID }}" \
+            --board docs/board_bullets.yaml \
+            --coverage coverage.xml \
+            --diffbase origin/main
+
+  # SOFT MODE: warnings only (non-blocking). Flip to hard later.
+  commit-messages:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' }}
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate commit messages (Conventional Commits; no Claude/Anthropic)
+        run: |
+          set -euo pipefail
+          BASE="${{ github.event.pull_request.base.sha }}"
+          HEAD="${{ github.event.pull_request.head.sha }}"
+          git fetch --depth=0 origin
+          FAIL=0
+          for c in $(git rev-list "$BASE..$HEAD"); do
+            MSG=$(git log -1 --pretty=%s "$c")
+            if ! echo "$MSG" | grep -Eq '^(feat|fix|chore|ci|docs|style|refactor|perf|test)(\(.+\))?!?: .+'; then
+              echo "::warning::Commit $c not Conventional Commits: $MSG"; FAIL=1; fi
+            if echo "$MSG" | grep -Eqi '\b(claude|anthropic)\b'; then
+              echo "::warning::Commit $c mentions Claude/Anthropic (discouraged): $MSG"; FAIL=1; fi
+          done
+          if [ "$FAIL" -eq 0 ]; then echo "✅ Commit messages look good"; else echo "⚠️ See warnings above"; fi
+
+  frontend:
+    runs-on: ubuntu-latest
+    needs: [lint]
+    if: ${{ hashFiles('dashboard/**') != '' }}
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20.x' }
+      - name: Install deps
+        run: |
+          cd dashboard
+          corepack enable
+          pnpm install --frozen-lockfile || pnpm install
+      - name: Prettier check
+        run: cd dashboard && npx prettier --check .
+      - name: ESLint (non-blocking)
+        run: cd dashboard && pnpm eslint . --max-warnings 0 || echo "::warning::eslint warnings/errors detected"
+      - name: TypeScript typecheck (non-blocking)
+        run: cd dashboard && pnpm tsc --noEmit || echo "::warning::tsc errors detected"
