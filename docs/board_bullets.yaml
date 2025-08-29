@@ -52,22 +52,66 @@
     acceptance:
       - PR includes `Card: P2.1.1`
 
+# ---------- Phase 2 (Data Adapters) ----------
+- id: P2.2.0
+  title: DataAdapter Port
+  design_contract:
+    file: trading_bot/data/base.py
+    interface: |
+      class BaseDataAdapter(Protocol):
+          async def subscribe(self, symbols: Sequence[str]) -> AsyncIterator[Bar]: ...
+          async def close(self) -> None: ...
+    constraints:
+      - No sync I/O; asyncio only
+      - Strong typing (mypy --strict)
+    tests:
+      - Type check + import smoke test
+    acceptance:
+      - PR includes `Card: P2.2.0`
+
 - id: P2.2.1
   parent_id: P2.2
-  title: FinnhubAdapter
+  title: TwelveDataRestAdapter
   design_contract:
-    file: trading_bot/data/finnhub_adapter.py
+    file: trading_bot/data/twelvedata_rest.py
     interface: |
-      class FinnhubAdapter(BaseDataAdapter):
-          async def subscribe(self, symbols: list[str]) -> AsyncIterator[Bar]: ...
+      class TwelveDataRestAdapter(BaseDataAdapter):
+          def __init__(self, api_key: str, base_url: str = "https://api.twelvedata.com"): ...
+          async def subscribe(self, symbols: Sequence[str]) -> AsyncIterator[Bar]: ...
+          async def close(self) -> None: ...
     constraints:
-      - aiohttp session reuse; HTTP429 backoff (0.5s * 2^n, max 6)
-      - Emit audit_event(type="data_error") on 429s/timeouts
+      - Use aiohttp session reuse; no sync I/O
+      - Fetch latest 1-minute bars via REST: GET /time_series?symbol=<SYM>&interval=1min&outputsize=1&apikey=****
+      - Handle HTTP 429: honor Retry-After if present; else exponential backoff (0.5s * 2^n, cap 32s)
+      - Structured warning log on non-200; emit audit_event(type="data_error") in real impl
     tests:
-      - aioresponses mock; branch coverage >= 95%
-      - property-based test for random symbol sets
+      - aioresponses: yields a Bar for a mocked response with values[0]
+      - 429 path: honors Retry-After when present; otherwise backs off
+      - branch coverage ≥ 95% for adapter module
     acceptance:
       - PR includes `Card: P2.2.1`
+
+- id: P2.2.2
+  parent_id: P2.2
+  title: TwelveDataWsAdapter
+  design_contract:
+    file: trading_bot/data/twelvedata_ws.py
+    interface: |
+      class TwelveDataWsAdapter(BaseDataAdapter):
+          def __init__(self, api_key: str, ws_url: str = "wss://ws.twelvedata.com/v1/stream"): ...
+          async def subscribe(self, symbols: Sequence[str]) -> AsyncIterator[Bar]: ...
+          async def close(self) -> None: ...
+    constraints:
+      - No sync I/O; use aiohttp.ws_connect or injected feed for tests
+      - Reconnect with exponential backoff on network errors (cap 32s)
+      - Map vendor message to Bar (Decimal prices; int volume)
+      - Keep CPU idle when idle (await, no busy loops)
+    tests:
+      - Injected fake feed yields a Bar and adapter forwards it
+      - Reconnect/backoff path covered by raising once then recovering
+      - mypy --strict clean
+    acceptance:
+      - PR includes `Card: P2.2.2`
 
 - id: P2.4.1
   parent_id: P2.4
